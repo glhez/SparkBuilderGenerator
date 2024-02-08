@@ -7,3 +7,4 @@ SparkBuilderGeneratorPlugin/SparkBuilderGeneratorUpdateSite/**/*.jar
 */target
 */test-classes
 .project
+*.bak
