@@ -1,5 +1,10 @@
+
 .settings/
+.project
+.classpath
 .metadata
+
+
 */build
 bin/
 SparkBuilderGeneratorPlugin/SparkBuilderGeneratorUpdateSite/**/*.jar
@@ -8,3 +13,4 @@ SparkBuilderGeneratorPlugin/SparkBuilderGeneratorUpdateSite/**/*.jar
 */test-classes
 .project
 *.bak
+.m2/

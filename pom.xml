@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.helospark</groupId>
+  <artifactId>parent</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+    <maven.compiler.release>17</maven.compiler.release>
+
+    <enforcer.requireJavaVersion>[17,)</enforcer.requireJavaVersion>
+    <enforcer.requireMavenVersion>[3.9.0,4.0.0)</enforcer.requireMavenVersion>
+
+
+    <plg.enforcer.version>3.4.1</plg.enforcer.version>
+    <plg.surefire.version>3.2.5</plg.surefire.version>
+    <plg.tycho.version>4.0.5</plg.tycho.version>
+    <plg.tycho-extras.version>4.0.5</plg.tycho-extras.version>
+  </properties>
+
+  <modules>
+    <module>target-platform</module>
+    <module>SparkBuilderGeneratorFeature</module>
+    <module>SparkBuilderGeneratorUpdateSite</module>
+    <module>SparkBuilderGeneratorPlugin</module>
+  </modules>
+
+  <build>
+    <defaultGoal>verify</defaultGoal>
+    <pluginManagement>
+      <plugins>
+        <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-enforcer-plugin</artifactId>             <version>${plg.enforcer.version}</version> </plugin>
+        <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-surefire-plugin</artifactId>             <version>${plg.surefire.version}</version> </plugin>
+        <plugin> <groupId>org.eclipse.tycho</groupId>        <artifactId>tycho-maven-plugin</artifactId>                <version>${plg.tycho.version}</version>    </plugin>
+
+        <plugin> <groupId>org.eclipse.tycho</groupId>        <artifactId>tycho-compiler-plugin</artifactId>             <version>${plg.tycho.version}</version>    </plugin>
+        <plugin> <groupId>org.eclipse.tycho</groupId>        <artifactId>tycho-surefire-plugin</artifactId>             <version>${plg.tycho.version}</version>    </plugin>
+        <plugin> <groupId>org.eclipse.tycho</groupId>        <artifactId>target-platform-configuration</artifactId>     <version>${plg.tycho.version}</version>    </plugin>
+
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin> <groupId>org.eclipse.tycho</groupId> <artifactId>tycho-maven-plugin</artifactId> <extensions>true</extensions> </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <inherited>true</inherited>
+            <goals> <goal>enforce</goal> </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion> <version>${enforcer.requireMavenVersion}</version>  </requireMavenVersion>
+                <requireJavaVersion> <version>${enforcer.requireJavaVersion}</version>    </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-compiler-plugin</artifactId>
+        <configuration>
+          <useProjectSettings>false</useProjectSettings>
+          <showDeprecation>true</showDeprecation>
+          <showWarnings>true</showWarnings>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <configuration>
+          <target>
+            <artifact> <groupId>com.helospark</groupId> <artifactId>target-definition</artifactId> <version>0.1.0-SNAPSHOT</version> </artifact>
+          </target>
+          <executionEnvironment>JavaSE-17</executionEnvironment>
+          <targetDefinitionIncludeSource>honor</targetDefinitionIncludeSource>
+          <pomDependencies>wrapAsBundle</pomDependencies>
+          <environments>
+            <environment> <os>win32</os> <ws>win32</ws> <arch>x86_64</arch> </environment>
+            <environment> <os>linux</os> <ws>gtk</ws>   <arch>x86_64</arch> </environment>
+          </environments>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
