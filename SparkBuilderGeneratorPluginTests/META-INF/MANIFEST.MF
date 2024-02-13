@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Fragment-Host: com.helospark.SparkBuilderGenerator
+Bundle-ManifestVersion: 2
+Bundle-Name: SparkBuilderGenerator Tests
+Bundle-SymbolicName: com.helospark.SparkBuilderGeneratorTests
+Bundle-Version: 0.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.jdt.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.jface.text
+Automatic-Module-Name: com.helospark.SparkBuilderGeneratorTests
+Import-Package: org.eclipse.ui.texteditor,
+ org.osgi.framework
