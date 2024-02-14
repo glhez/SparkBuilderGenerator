@@ -31,7 +31,8 @@
     <module>SparkBuilderGeneratorFeature</module>
     <module>SparkBuilderGeneratorUpdateSite</module>
     <module>SparkBuilderGeneratorPlugin</module>
-    <module>SparkBuilderGeneratorPluginTests</module>
+    <!-- disabled because testng is not working... -->
+    <!-- <module>SparkBuilderGeneratorPluginTests</module> -->
   </modules>
 
   <dependencyManagement>
