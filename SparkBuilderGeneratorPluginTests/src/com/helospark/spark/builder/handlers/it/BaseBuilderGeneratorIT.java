@@ -8,15 +8,12 @@ import static org.mockito.Mockito.doNothing;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
@@ -180,8 +177,14 @@ public class BaseBuilderGeneratorIT {
         assertEquals(actual, expected);
     }
 
-    public String readClasspathFile(String fileName) throws IOException, URISyntaxException {
-        Path uri = Paths.get(this.getClass().getResource("/" + fileName).toURI());
-        return new String(Files.readAllBytes(uri), StandardCharsets.UTF_8);
+    public String readClasspathFile(String fileName) throws IOException {
+        var res = "/resources/" + fileName;
+        var url = this.getClass().getResource(res);
+        if (url == null) {
+            throw new AssertionFailedException("resource not found " + res);
+        }
+        try (var is = url.openStream()) {
+            return new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        }
     }
 }

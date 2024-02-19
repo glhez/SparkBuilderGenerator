@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.ui,
  org.eclipse.jdt.core,
  org.eclipse.jface.text,
- org.testng;bundle-version="7.9.0"
+ org.testng,
+ org.mockito.mockito-core
 Automatic-Module-Name: com.helospark.SparkBuilderGeneratorTests
 Import-Package: org.eclipse.ui.texteditor,
  org.osgi.framework
