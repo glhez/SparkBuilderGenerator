@@ -27,8 +27,13 @@
           <providerHint>testng</providerHint>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <failIfNoTests>true</failIfNoTests>
+          <includes>
+            <include>%regex[.*(IT|Test).class$]</include>
+          </includes>
           <executions>
             <execution>
+              <id>execute-tests</id>
+              <phase>test</phase>
               <goals> <goal>test</goal> </goals>
             </execution>
           </executions>
