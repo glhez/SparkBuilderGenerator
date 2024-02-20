@@ -31,7 +31,7 @@ public class JacksonAnnotationWithRegularBuilderAndChangedDialogIT extends BaseB
         given(preferenceStore.getBoolean("org.helospark.builder.addJacksonDeserializeAnnotation")).willReturn(true);
         given(preferenceStore.getBoolean("org.helospark.builder.showFieldFilterDialogForRegularBuilder")).willReturn(true);
     }
-    
+
     @AfterMethod
     public void afterMethod() throws Exception {
         super.tearDown();
@@ -40,18 +40,24 @@ public class JacksonAnnotationWithRegularBuilderAndChangedDialogIT extends BaseB
     @Override
     protected void diContainerOverrides() {
         super.diContainerOverrides();
-        DiContainer.addDependency(regularBuilderUserPreferenceDialogOpener);
+        DiContainer.addTestDependency(regularBuilderUserPreferenceDialogOpener);
     }
 
     @Test(dataProvider = "testCasesForRegularBuilder")
     public void testWithDefaultEnabled(String inputFile, String expectedOutputFile, boolean includeJacksonAnnotations) throws Exception {
         // GIVEN
         RegularBuilderDialogData dialogResult = RegularBuilderDialogData.builder()
-                .withAddJacksonDeserializeAnnotation(includeJacksonAnnotations)
-                .withShouldCreateCopyMethod(false)
-                .withRegularBuilderFieldIncludeFieldIncludeDomains(
-                        Arrays.asList(new RegularBuilderFieldIncludeFieldIncludeDomain(true, false, "from"), new RegularBuilderFieldIncludeFieldIncludeDomain(true, false, "to")))
-                .build();
+                                                                        .withAddJacksonDeserializeAnnotation(includeJacksonAnnotations)
+                                                                        .withShouldCreateCopyMethod(false)
+                                                                        .withRegularBuilderFieldIncludeFieldIncludeDomains(
+                                                                                                                           Arrays.asList(new RegularBuilderFieldIncludeFieldIncludeDomain(
+                                                                                                                                   true, false,
+                                                                                                                                   "from"),
+                                                                                                                                         new RegularBuilderFieldIncludeFieldIncludeDomain(
+                                                                                                                                                 true,
+                                                                                                                                                 false,
+                                                                                                                                                 "to")))
+                                                                        .build();
         given(regularBuilderUserPreferenceDialogOpener.open(any())).willReturn(Optional.of(dialogResult));
 
         underTest = new GenerateRegularBuilderHandler();

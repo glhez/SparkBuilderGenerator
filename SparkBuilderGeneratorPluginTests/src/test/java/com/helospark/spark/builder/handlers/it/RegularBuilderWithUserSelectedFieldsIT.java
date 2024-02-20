@@ -31,7 +31,7 @@ public class RegularBuilderWithUserSelectedFieldsIT extends BaseBuilderGenerator
         underTest = new GenerateRegularBuilderHandler();
         given(preferenceStore.getBoolean("org.helospark.builder.showFieldFilterDialogForRegularBuilder")).willReturn(true);
     }
-    
+
     @AfterMethod
     public void afterMethod() throws Exception {
         super.tearDown();
@@ -40,13 +40,14 @@ public class RegularBuilderWithUserSelectedFieldsIT extends BaseBuilderGenerator
     @Override
     protected void diContainerOverrides() {
         super.diContainerOverrides();
-        DiContainer.addDependency(regularBuilderUserPreferenceDialogOpener);
+        DiContainer.addTestDependency(regularBuilderUserPreferenceDialogOpener);
     }
 
     @Test(dataProvider = "filteredDialogDataProvider")
     public void testFilteringDialog(String inputFile, String expectedOutputFile, List<Integer> includedFields) throws Exception {
         // GIVEN
-        RegularBuilderFilterDialogAnswerProvider regularBuilderFilterDialogAnswerProvider = new RegularBuilderFilterDialogAnswerProvider(includedFields, false);
+        RegularBuilderFilterDialogAnswerProvider regularBuilderFilterDialogAnswerProvider = new RegularBuilderFilterDialogAnswerProvider(
+                includedFields, false);
         given(regularBuilderUserPreferenceDialogOpener.open(any(RegularBuilderDialogData.class))).willAnswer(regularBuilderFilterDialogAnswerProvider::provideAnswer);
 
         String input = readClasspathFile(inputFile);

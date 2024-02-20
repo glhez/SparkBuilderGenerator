@@ -49,7 +49,7 @@ public class BuilderInstanceCopyIT extends BaseBuilderGeneratorIT {
     @Override
     protected void diContainerOverrides() {
         super.diContainerOverrides();
-        DiContainer.addDependency(regularBuilderUserPreferenceDialogOpener);
+        DiContainer.addTestDependency(regularBuilderUserPreferenceDialogOpener);
     }
 
     @Test(dataProvider = "testCasesForRegularBuilderCopyInstance")

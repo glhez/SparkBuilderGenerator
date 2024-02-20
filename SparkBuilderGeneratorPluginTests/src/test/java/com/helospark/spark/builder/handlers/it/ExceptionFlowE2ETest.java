@@ -33,7 +33,7 @@ public class ExceptionFlowE2ETest extends BaseBuilderGeneratorIT {
         super.init();
         underTest = new GenerateRegularBuilderHandler();
     }
-    
+
     @AfterMethod
     public void afterMethod() throws Exception {
         super.tearDown();
@@ -42,8 +42,8 @@ public class ExceptionFlowE2ETest extends BaseBuilderGeneratorIT {
     @Override
     protected void diContainerOverrides() {
         super.diContainerOverrides();
-        DiContainer.addDependency(builderAstRemover);
-        DiContainer.addDependency(regularBuilderCompilationUnitGenerator);
+        DiContainer.addTestDependency(builderAstRemover);
+        DiContainer.addTestDependency(regularBuilderCompilationUnitGenerator);
         given(regularBuilderCompilationUnitGenerator.canHandle(BuilderType.REGULAR)).willReturn(true);
     }
 
@@ -52,8 +52,9 @@ public class ExceptionFlowE2ETest extends BaseBuilderGeneratorIT {
         // GIVEN
         BuilderRemover builderRemover = DiContainer.getDependency(BuilderRemover.class);
         willThrow(new RuntimeException("Cause"))
-                .given(builderAstRemover)
-                .removeBuilder(any(ASTRewrite.class), any(CompilationUnit.class), any(CompilationUnitModificationDomain.class));
+                                                .given(builderAstRemover)
+                                                .removeBuilder(any(ASTRewrite.class), any(CompilationUnit.class),
+                                                               any(CompilationUnitModificationDomain.class));
         super.setInput("class TestClass {}");
         CompilationUnitModificationDomain dummyCompilationUnitModificationDomain = CompilationUnitModificationDomain.builder().build();
 
@@ -68,8 +69,8 @@ public class ExceptionFlowE2ETest extends BaseBuilderGeneratorIT {
     public void testWhenPluginExceptionOccurresShouldShowDialog() throws Exception {
         // GIVEN
         willThrow(new PluginException("Cause"))
-                .given(regularBuilderCompilationUnitGenerator)
-                .generateBuilder(any(CompilationUnitModificationDomain.class));
+                                               .given(regularBuilderCompilationUnitGenerator)
+                                               .generateBuilder(any(CompilationUnitModificationDomain.class));
         super.setInput("class TestClass {}");
 
         // WHEN
@@ -84,8 +85,8 @@ public class ExceptionFlowE2ETest extends BaseBuilderGeneratorIT {
         // GIVEN
         RuntimeException unexpectedException = new RuntimeException("Cause");
         willThrow(unexpectedException)
-                .given(regularBuilderCompilationUnitGenerator)
-                .generateBuilder(any(CompilationUnitModificationDomain.class));
+                                      .given(regularBuilderCompilationUnitGenerator)
+                                      .generateBuilder(any(CompilationUnitModificationDomain.class));
         super.setInput("class TestClass {}");
 
         // WHEN
@@ -99,19 +100,18 @@ public class ExceptionFlowE2ETest extends BaseBuilderGeneratorIT {
         // GIVEN
         RuntimeException unexpectedException = new RuntimeException("Cause");
         willThrow(unexpectedException)
-                .given(regularBuilderCompilationUnitGenerator)
-                .generateBuilder(any(CompilationUnitModificationDomain.class));
+                                      .given(regularBuilderCompilationUnitGenerator)
+                                      .generateBuilder(any(CompilationUnitModificationDomain.class));
         super.setInput("class TestClass {}");
 
         // WHEN
         try {
             underTest.execute(dummyExecutionEvent);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
         // THEN
         verify(dialogWrapper).openErrorDialogWithStacktrace("Error",
-                "This error should not have happened!\nYou can create an issue on https://github.com/helospark/SparkTools with the below stacktrace",
-                unexpectedException);
+                                                            "This error should not have happened!\nYou can create an issue on https://github.com/helospark/SparkTools with the below stacktrace",
+                                                            unexpectedException);
     }
 
     @Test
@@ -119,18 +119,17 @@ public class ExceptionFlowE2ETest extends BaseBuilderGeneratorIT {
         // GIVEN
         NoSuchMethodError unexpectedException = new NoSuchMethodError("Cause");
         willThrow(unexpectedException)
-                .given(regularBuilderCompilationUnitGenerator)
-                .generateBuilder(any(CompilationUnitModificationDomain.class));
+                                      .given(regularBuilderCompilationUnitGenerator)
+                                      .generateBuilder(any(CompilationUnitModificationDomain.class));
         super.setInput("class TestClass {}");
 
         // WHEN
         try {
             underTest.execute(dummyExecutionEvent);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
         // THEN
         verify(dialogWrapper).openErrorDialogWithStacktrace("Error",
-                "This error should not have happened!\nYou can create an issue on https://github.com/helospark/SparkTools with the below stacktrace",
-                unexpectedException);
+                                                            "This error should not have happened!\nYou can create an issue on https://github.com/helospark/SparkTools with the below stacktrace",
+                                                            unexpectedException);
     }
 }

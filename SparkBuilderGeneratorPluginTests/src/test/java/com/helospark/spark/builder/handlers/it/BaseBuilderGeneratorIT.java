@@ -102,14 +102,14 @@ public class BaseBuilderGeneratorIT {
     }
 
     protected void diContainerOverrides() {
-        DiContainer.addDependency(handlerUtilWrapper);
-        DiContainer.addDependency(workingCopyManagerWrapper);
-        DiContainer.addDependency(compilationUnitParser);
-        DiContainer.addDependency(preferenceStoreProvider);
-        DiContainer.addDependency(dialogWrapper);
-        DiContainer.addDependency(iTypeExtractor);
-        DiContainer.addDependency(fullyQualifiedNameExtractor);
-        DiContainer.addDependency(stagedBuilderStagePropertyInputDialogOpener);
+        DiContainer.addTestDependency(handlerUtilWrapper);
+        DiContainer.addTestDependency(workingCopyManagerWrapper);
+        DiContainer.addTestDependency(compilationUnitParser);
+        DiContainer.addTestDependency(preferenceStoreProvider);
+        DiContainer.addTestDependency(dialogWrapper);
+        DiContainer.addTestDependency(iTypeExtractor);
+        DiContainer.addTestDependency(fullyQualifiedNameExtractor);
+        DiContainer.addTestDependency(stagedBuilderStagePropertyInputDialogOpener);
     }
 
     protected void setInput(String sourceAsString) throws JavaModelException {
@@ -162,7 +162,7 @@ public class BaseBuilderGeneratorIT {
     protected CompilationUnit parseAst(char[] source) {
         ASTParser parser = ASTParser.newParser(JlsVersionProvider.getLatestJlsVersion());
         parser.setSource(source);
-        Map options = JavaCore.getOptions();
+        Map<String, String> options = JavaCore.getOptions();
         JavaCore.setComplianceOptions(JavaCore.VERSION_17, options);
         parser.setCompilerOptions(options);
         CompilationUnit result = (CompilationUnit) parser.createAST(null);
@@ -178,7 +178,7 @@ public class BaseBuilderGeneratorIT {
     }
 
     public String readClasspathFile(String fileName) throws IOException {
-        var res = "/resources/" + fileName;
+        var res = "/" + fileName;
         var url = this.getClass().getResource(res);
         if (url == null) {
             throw new AssertionFailedException("resource not found " + res);

@@ -376,24 +376,15 @@ public class DiContainer {
     }
 
     // Visible for testing
-    public static void addDependency(Object dependency) {
-        boolean alreadyHasDependency = diContainer.stream()
-                                                  .anyMatch(value -> isSameMockitoMockDependency(dependency.getClass().toString(),
-                                                                                                 value.getClass().toString()));
-
-        if (!alreadyHasDependency) {
-            diContainer.add(dependency);
-        }
+    private static void addDependency(Object dependency) {
+        diContainer.add(dependency);
     }
 
-    private static boolean isSameMockitoMockDependency(String newDependency, String oldDependency) {
-        int mockitoClassNameStartIndex = oldDependency.indexOf("$$EnhancerByMockitoWithCGLIB");
-        if (mockitoClassNameStartIndex != -1) {
-            String mockitolessClassName = oldDependency.substring(0, mockitoClassNameStartIndex);
-            return newDependency.equals(mockitolessClassName);
-        } else {
-            return false;
-        }
+    public static void addTestDependency(Object dependency) {
+        /*
+         * mockito + java 17: testing for the class name won't work as previous.
+         */
+        diContainer.add(dependency);
     }
 
     /**
@@ -403,23 +394,20 @@ public class DiContainer {
      *            type to get
      * @return dependency of that class
      */
-    @SuppressWarnings("unchecked")
     public static <T> T getDependency(Class<T> clazz) {
-        return (T) diContainer.stream()
-                              .filter(value -> clazz.isAssignableFrom(value.getClass()))
-                              .findFirst()
-                              .orElseThrow(() -> new RuntimeException("Unable to initialize " + clazz.getName() + " not found"));
+        return diContainer.stream()
+                          .filter(value -> clazz.isAssignableFrom(value.getClass()))
+                          .map(clazz::cast)
+                          .findFirst()
+                          .orElseThrow(() -> new RuntimeException("Unable to initialize " + clazz.getName() + " not found"));
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> List<T> getDependencyList(Class<T> classToFind) {
-        List<Object> result = new ArrayList<>();
-        for (Object o : diContainer) {
-            if (classToFind.isAssignableFrom(o.getClass())) {
-                result.add(o);
-            }
-        }
-        return (List<T>) result;
+        return diContainer.stream()
+                          .filter(value -> classToFind.isAssignableFrom(value.getClass()))
+                          .map(classToFind::cast)
+                          .toList();
+
     }
 
 }

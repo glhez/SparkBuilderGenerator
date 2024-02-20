@@ -60,8 +60,8 @@ public class DefaultPreferencesE2ETest extends BaseBuilderGeneratorIT {
     @Override
     protected void diContainerOverrides() {
         super.diContainerOverrides();
-        DiContainer.addDependency(stagedBuilderStagePropertyInputDialogOpener);
-        DiContainer.addDependency(currentlySelectedApplicableClassesClassNameProvider);
+        DiContainer.addTestDependency(stagedBuilderStagePropertyInputDialogOpener);
+        DiContainer.addTestDependency(currentlySelectedApplicableClassesClassNameProvider);
     }
 
     @Test

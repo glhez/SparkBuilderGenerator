@@ -34,7 +34,7 @@ public class ClassSelectionE2ETest extends BaseBuilderGeneratorIT {
         underTest = new GenerateRegularBuilderHandler();
         given(preferenceStore.getBoolean("org.helospark.builder.alwaysGenerateBuilderToFirstClass")).willReturn(false);
     }
-    
+
     @AfterMethod
     public void afterMethod() throws Exception {
         super.tearDown();
@@ -43,14 +43,14 @@ public class ClassSelectionE2ETest extends BaseBuilderGeneratorIT {
     @Override
     protected void diContainerOverrides() {
         super.diContainerOverrides();
-        DiContainer.addDependency(currentlySelectedApplicableClassesClassNameProvider);
+        DiContainer.addTestDependency(currentlySelectedApplicableClassesClassNameProvider);
     }
 
     @Test(dataProvider = "multiClassTestFileNameProvider")
     public void testMultipleClassSelection(String inputFile, String expectedOutputFile, Optional<String> currentClassName) throws Exception {
         // GIVEN
         given(currentlySelectedApplicableClassesClassNameProvider.provideCurrentlySelectedClassName(any(ICompilationUnit.class)))
-                .willReturn(currentClassName);
+                                                                                                                                 .willReturn(currentClassName);
         String input = readClasspathFile(inputFile);
         String expectedResult = readClasspathFile(expectedOutputFile);
         super.setInput(input);
@@ -74,9 +74,12 @@ public class ClassSelectionE2ETest extends BaseBuilderGeneratorIT {
                 // GitHub #44, when standing in an enum, shouldn't fail
                 { "enum_class/class_with_enum_input.tjava", "enum_class/class_with_enum_output.tjava", of("FirstEnum") },
                 { "enum_class/class_with_enum_input.tjava", "enum_class/class_with_enum_output.tjava", of("ClassWithEnum") },
-                { "enum_class/class_with_enum_between_classes_input.tjava", "enum_class/class_with_enum_between_classes_first_output.tjava", of("FirstClass") },
-                { "enum_class/class_with_enum_between_classes_input.tjava", "enum_class/class_with_enum_between_classes_first_output.tjava", of("SomeEnum") },
-                { "enum_class/class_with_enum_between_classes_input.tjava", "enum_class/class_with_enum_between_classes_second_output.tjava", of("SecondClass") },
+                { "enum_class/class_with_enum_between_classes_input.tjava", "enum_class/class_with_enum_between_classes_first_output.tjava",
+                        of("FirstClass") },
+                { "enum_class/class_with_enum_between_classes_input.tjava", "enum_class/class_with_enum_between_classes_first_output.tjava",
+                        of("SomeEnum") },
+                { "enum_class/class_with_enum_between_classes_input.tjava", "enum_class/class_with_enum_between_classes_second_output.tjava",
+                        of("SecondClass") },
         };
     }
 
@@ -84,7 +87,7 @@ public class ClassSelectionE2ETest extends BaseBuilderGeneratorIT {
     public void testMultipleClassSelectionWhenExceptionIsThrownAlwaysGenerateToFirstClass(String inputFile, String outputFile) throws Exception {
         // GIVEN
         given(currentlySelectedApplicableClassesClassNameProvider.provideCurrentlySelectedClassName(any(ICompilationUnit.class)))
-                .willThrow(new RuntimeException());
+                                                                                                                                 .willThrow(new RuntimeException());
         String input = readClasspathFile(inputFile);
         String expectedResult = readClasspathFile(outputFile);
         super.setInput(input);
@@ -106,13 +109,14 @@ public class ClassSelectionE2ETest extends BaseBuilderGeneratorIT {
     }
 
     @Test(dataProvider = "multiClassTestWithStagedBuilder")
-    public void testMultipleClassSelectionWithStagedBuilder(String inputFile, String expectedOutputFile, Optional<String> currentClassName) throws Exception {
+    public void testMultipleClassSelectionWithStagedBuilder(String inputFile, String expectedOutputFile, Optional<String> currentClassName)
+            throws Exception {
         // GIVEN
         underTest = new GenerateStagedBuilderHandler();
         given(stagedBuilderStagePropertyInputDialogOpener.open(any(List.class))).willAnswer(data -> dialogAnswerProvider.provideAnswer(data));
 
         given(currentlySelectedApplicableClassesClassNameProvider.provideCurrentlySelectedClassName(any(ICompilationUnit.class)))
-                .willReturn(currentClassName);
+                                                                                                                                 .willReturn(currentClassName);
 
         String input = readClasspathFile(inputFile);
         String expectedResult = readClasspathFile(expectedOutputFile);
@@ -138,7 +142,7 @@ public class ClassSelectionE2ETest extends BaseBuilderGeneratorIT {
         // GIVEN
         given(preferenceStore.getBoolean("add_generated_annotation")).willReturn(true); // only works with @Generated
         given(currentlySelectedApplicableClassesClassNameProvider.provideCurrentlySelectedClassName(any(ICompilationUnit.class)))
-                .willReturn(of("Builder"));
+                                                                                                                                 .willReturn(of("Builder"));
         String input = readClasspathFile("class_with_already_generated_builder.tjava");
         String expectedResult = readClasspathFile("class_with_already_generated_builder.tjava");
         super.setInput(input);
