@@ -36,8 +36,9 @@
 
   <dependencyManagement>
     <dependencies>
-      <dependency> <groupId>org.mockito</groupId> <artifactId>mockito-core</artifactId> <version>${dep.mockito-core.version}</version> </dependency>
-      <dependency> <groupId>org.testng</groupId>  <artifactId>testng</artifactId>       <version>${dep.testng.version}</version>       </dependency>
+      <dependency> <groupId>org.mockito</groupId>   <artifactId>mockito-core</artifactId>                        <version>${dep.mockito-core.version}</version> </dependency>
+      <dependency> <groupId>org.testng</groupId>    <artifactId>testng</artifactId>                              <version>${dep.testng.version}</version>       </dependency>
+      <dependency> <groupId>com.helospark</groupId> <artifactId>com.helospark.SparkBuilderGenerator</artifactId> <version>0.1.0-SNAPSHOT</version>              </dependency>
     </dependencies>
   </dependencyManagement>
 
